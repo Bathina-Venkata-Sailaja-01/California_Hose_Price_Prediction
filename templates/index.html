@@ -102,10 +102,24 @@ async function uploadCSV() {
     const response = await fetch('/predict_file', {method: 'POST', body: payload});
     const data = await response.json();
     if (!response.ok) throw new Error(data.detail || 'The CSV could not be processed. Check its columns and try again.');
-    output.textContent = `${data.predictions.length.toLocaleString()} predictions generated successfully.`;
+    const predictions = data.predictions;
+    const rowsToShow = predictions.slice(0, 50);
+    const csv = ['Row,Prediction', ...predictions.map((value, index) => `${index + 1},${value}`)].join('\n');
+    const downloadUrl = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    output.innerHTML = `
+      <div class="csv-summary">${predictions.length.toLocaleString()} predictions generated${predictions.length > 50 ? ' · showing first 50' : ''}</div>
+      <a class="download-results" href="${downloadUrl}" download="calipredict_results.csv">Download predictions CSV ↓</a>
+      <div class="prediction-table-wrap">
+        <table class="prediction-table">
+          <thead><tr><th>Row</th><th>Predicted value</th></tr></thead>
+          <tbody>${rowsToShow.map((value, index) => `<tr><td>${index + 1}</td><td>${Number(value).toLocaleString('en-US', { maximumFractionDigits: 4 })}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>`;
   } catch (error) { output.textContent = error.message || 'Unable to process this CSV. Please try again.'; }
   finally { button.disabled = false; }
 }
 </script>
 </body>
 </html>
+
+

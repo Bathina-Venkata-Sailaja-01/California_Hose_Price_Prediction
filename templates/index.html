@@ -1,125 +1,977 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f8fc">
-  <title>CaliPredict — California home estimates</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8fc">
+
+    <title>CaliPredict — California home estimates</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="brand" href="#top" aria-label="CaliPredict home"><span class="brand-mark">C</span><span>Cali<span class="brand-light">Predict</span></span></a>
-    <nav aria-label="Main navigation"><a href="#estimate">Single estimate</a><a href="#batch">Batch predictions</a></nav>
-    <a class="top-cta" href="#estimate">Get an estimate <span aria-hidden="true">↗</span></a>
-  </header>
-  <main id="top">
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="live-dot"></span> CALIFORNIA HOUSING · ML ESTIMATES</div>
-        <h1>A clearer view of<br>your <span>home’s value.</span></h1>
-        <p class="hero-intro">A quick, data-driven estimate based on the neighborhood details that shape California home values.</p>
-        <a class="primary-link" href="#estimate">Estimate a property <span aria-hidden="true">↓</span></a>
-        <div class="hero-note"><span class="check">✓</span> Six details in. One helpful estimate out.</div>
-      </div>
-      <div class="hero-visual" aria-label="Illustration of a California home in a sunny landscape">
-        <div class="sun"></div><div class="visual-label"><span class="visual-pin">⌖</span><span><b>Built around your area</b><small>Local details make a difference</small></span></div>
-        <div class="land land-back"></div><div class="land land-front"></div>
-        <div class="home"><div class="roof"></div><div class="house-body"><div class="window window-one"></div><div class="window window-two"></div><div class="door"></div></div><div class="side-house"></div></div>
-        <div class="tree tree-one"><i></i><b></b></div><div class="tree tree-two"><i></i><b></b></div>
-        <div class="visual-caption">A neighborhood-level estimate, made simple.</div>
-      </div>
-    </section>
-    <section class="estimate-section" id="estimate">
-      <div class="section-intro"><div class="eyebrow">YOUR PROPERTY SNAPSHOT</div><h2>Let’s find your estimate.</h2><p>Enter the neighborhood averages below to get started.</p></div>
-      <div class="workspace">
-        <form class="form-card" id="predictionForm">
-          <div class="card-heading"><span class="step">01</span><div><h3>Property details</h3><p>All fields are required for an estimate.</p></div></div>
-          <div class="field-grid">
-            <label class="field"><span>Median income <em>MedInc</em></span><span class="control"><input type="number" id="MedInc" step="any" min="0" placeholder="e.g. 5.2" required><span class="unit">× $10,000</span></span><small>Median household income in the area</small></label>
-            <label class="field"><span>House age <em>HouseAge</em></span><span class="control"><input type="number" id="HouseAge" step="any" min="0" placeholder="e.g. 25" required><span class="unit">years</span></span><small>Median age of homes in the area</small></label>
-            <label class="field"><span>Average rooms <em>AveRooms</em></span><span class="control"><input type="number" id="AveRooms" step="any" min="0" placeholder="e.g. 5.5" required><span class="unit">rooms</span></span><small>Average rooms per household</small></label>
-            <label class="field"><span>Population <em>Population</em></span><span class="control"><input type="number" id="Population" step="any" min="0" placeholder="e.g. 1,200" required><span class="unit">people</span></span><small>People living in the area</small></label>
-            <label class="field"><span>Average occupancy <em>AveOccup</em></span><span class="control"><input type="number" id="AveOccup" step="any" min="0" placeholder="e.g. 3.2" required><span class="unit">people / home</span></span><small>Average residents per household</small></label>
-            <label class="field"><span>Latitude <em>Latitude</em></span><span class="control"><input type="number" id="Latitude" step="any" min="32" max="42" placeholder="e.g. 34.05" required><span class="unit">° N</span></span><small>California latitude (approximately 32–42°)</small></label>
-          </div>
-          <button class="submit-button" id="predictButton" type="submit">Get my estimate <span aria-hidden="true">→</span></button>
-          <p class="form-footnote"><span aria-hidden="true">ⓘ</span> Estimates are generated by a machine learning model.</p>
-        </form>
-        <aside class="result-card" aria-live="polite">
-          <div class="result-top"><span class="result-icon">↗</span><span class="result-tag">YOUR ESTIMATE</span></div>
-          <div class="result-content"><p class="result-label">Estimated home value</p><div id="predictionResult" class="price">$<span>—</span></div><p id="resultMessage" class="result-message">Your estimate will appear here once you enter the property details.</p></div>
-          <div class="result-divider"></div><div class="result-detail"><span>Estimate type</span><b>Area-based prediction</b></div><div class="result-detail"><span>Powered by</span><b>CaliPredict model</b></div>
-          <div class="result-decoration" aria-hidden="true">⌂</div>
-        </aside>
-      </div>
-    </section>
-    <section class="batch-section" id="batch"><div class="batch-inner"><div><div class="eyebrow">MORE THAN ONE PROPERTY?</div><h2>Estimate a whole dataset.</h2><p>Upload a CSV with the same six model features to generate predictions in one go.</p></div>
-      <div class="upload-card"><div class="upload-icon">↑</div><div class="upload-copy"><b>Upload your CSV file</b><span id="fileName">Choose a file to begin · .csv</span></div><label class="file-button" for="csvFile">Browse files</label><input type="file" id="csvFile" accept=".csv,text/csv"><button class="upload-button" id="uploadButton" onclick="uploadCSV()" type="button">Upload &amp; predict <span>→</span></button><div id="csvResult" class="csv-result" aria-live="polite"></div></div>
-    </div></section>
-  </main>
-  <footer><a class="brand footer-brand" href="#top"><span class="brand-mark">C</span><span>Cali<span class="brand-light">Predict</span></span></a><span>California home estimates, made approachable.</span><span>© 2026 CaliPredict</span></footer>
-<script>
-const form = document.getElementById('predictionForm');
-const result = document.getElementById('predictionResult');
-const message = document.getElementById('resultMessage');
-const predictButton = document.getElementById('predictButton');
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const params = new URLSearchParams();
-  ['MedInc', 'HouseAge', 'AveRooms', 'Population', 'AveOccup', 'Latitude'].forEach((key) => params.set(key, document.getElementById(key).value));
-  predictButton.disabled = true;
-  predictButton.innerHTML = 'Calculating estimate <span class="spinner" aria-hidden="true"></span>';
-  result.innerHTML = '<span class="calculating">…</span>';
-  message.textContent = 'Checking the property details and generating your estimate.';
-  try {
-    const response = await fetch(`/predict?${params.toString()}`);
-    if (!response.ok) throw new Error('The prediction request could not be completed.');
-    const data = await response.json();
-    if (typeof data.prediction !== 'number' || !Number.isFinite(data.prediction)) throw new Error('The model returned an invalid estimate.');
-    result.innerHTML = `$<span>${(data.prediction * 100000).toLocaleString('en-US', {maximumFractionDigits: 0})}</span>`;
-    message.textContent = 'Estimate generated from the details you provided.';
-  } catch (error) {
-    result.innerHTML = '$<span>—</span>';
-    message.textContent = error.message || 'Unable to generate an estimate. Please try again.';
-  } finally {
-    predictButton.disabled = false;
-    predictButton.innerHTML = 'Get my estimate <span aria-hidden="true">→</span>';
-  }
-});
-const csvFile = document.getElementById('csvFile');
-csvFile.addEventListener('change', () => { document.getElementById('fileName').textContent = csvFile.files[0]?.name || 'Choose a file to begin · .csv'; });
-async function uploadCSV() {
-  const output = document.getElementById('csvResult');
-  const button = document.getElementById('uploadButton');
-  if (!csvFile.files.length) { output.textContent = 'Please choose a CSV file first.'; return; }
-  const payload = new FormData(); payload.append('file', csvFile.files[0]);
-  button.disabled = true; output.textContent = 'Processing your file…';
-  try {
-    const response = await fetch('/predict_file', {method: 'POST', body: payload});
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.detail || 'The CSV could not be processed. Check its columns and try again.');
-    const predictions = data.predictions;
-    const rowsToShow = predictions.slice(0, 50);
-    const csv = ['Row,Prediction', ...predictions.map((value, index) => `${index + 1},${value}`)].join('\n');
-    const downloadUrl = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-    output.innerHTML = `
-      <div class="csv-summary">${predictions.length.toLocaleString()} predictions generated${predictions.length > 50 ? ' · showing first 50' : ''}</div>
-      <a class="download-results" href="${downloadUrl}" download="calipredict_results.csv">Download predictions CSV ↓</a>
-      <div class="prediction-table-wrap">
-        <table class="prediction-table">
-          <thead><tr><th>Row</th><th>Predicted value</th></tr></thead>
-          <tbody>${rowsToShow.map((value, index) => `<tr><td>${index + 1}</td><td>${Number(value).toLocaleString('en-US', { maximumFractionDigits: 4 })}</td></tr>`).join('')}</tbody>
-        </table>
-      </div>`;
-  } catch (error) { output.textContent = error.message || 'Unable to process this CSV. Please try again.'; }
-  finally { button.disabled = false; }
-}
-</script>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="topbar">
+
+        <a class="brand" href="#top" aria-label="CaliPredict home">
+            <span class="brand-mark">C</span>
+
+            <span>
+                Cali<span class="brand-light">Predict</span>
+            </span>
+        </a>
+
+        <nav aria-label="Main navigation">
+            <a href="#estimate">Single estimate</a>
+            <a href="#batch">Batch predictions</a>
+        </nav>
+
+        <a class="top-cta" href="#estimate">
+            Get an estimate
+            <span aria-hidden="true">↗</span>
+        </a>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main id="top">
+
+
+        <!-- =========================
+             HERO SECTION
+        ========================== -->
+
+        <section class="hero">
+
+            <div class="hero-copy">
+
+                <div class="eyebrow">
+                    <span class="live-dot"></span>
+                    CALIFORNIA HOUSING · ML ESTIMATES
+                </div>
+
+                <h1>
+                    A clearer view of<br>
+                    your <span>home’s value.</span>
+                </h1>
+
+                <p class="hero-intro">
+                    A quick, data-driven estimate based on the
+                    neighborhood details that shape California home values.
+                </p>
+
+                <a class="primary-link" href="#estimate">
+                    Estimate a property
+                    <span aria-hidden="true">↓</span>
+                </a>
+
+                <div class="hero-note">
+                    <span class="check">✓</span>
+                    Six details in. One helpful estimate out.
+                </div>
+
+            </div>
+
+
+            <!-- HERO VISUAL -->
+
+            <div
+                class="hero-visual"
+                aria-label="Illustration of a California home in a sunny landscape"
+            >
+
+                <div class="sun"></div>
+
+                <div class="visual-label">
+
+                    <span class="visual-pin">⌖</span>
+
+                    <span>
+                        <b>Built around your area</b>
+                        <small>Local details make a difference</small>
+                    </span>
+
+                </div>
+
+                <div class="land land-back"></div>
+                <div class="land land-front"></div>
+
+                <div class="home">
+
+                    <div class="roof"></div>
+
+                    <div class="house-body">
+                        <div class="window window-one"></div>
+                        <div class="window window-two"></div>
+                        <div class="door"></div>
+                    </div>
+
+                    <div class="side-house"></div>
+
+                </div>
+
+                <div class="tree tree-one">
+                    <i></i>
+                    <b></b>
+                </div>
+
+                <div class="tree tree-two">
+                    <i></i>
+                    <b></b>
+                </div>
+
+                <div class="visual-caption">
+                    A neighborhood-level estimate, made simple.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SINGLE PREDICTION
+        ========================== -->
+
+        <section class="estimate-section" id="estimate">
+
+            <div class="section-intro">
+
+                <div class="eyebrow">
+                    YOUR PROPERTY SNAPSHOT
+                </div>
+
+                <h2>
+                    Let’s find your estimate.
+                </h2>
+
+                <p>
+                    Enter the neighborhood averages below to get started.
+                </p>
+
+            </div>
+
+
+            <div class="workspace">
+
+
+                <!-- FORM -->
+
+                <form class="form-card" id="predictionForm">
+
+                    <div class="card-heading">
+
+                        <span class="step">01</span>
+
+                        <div>
+                            <h3>Property details</h3>
+
+                            <p>
+                                All fields are required for an estimate.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="field-grid">
+
+
+                        <!-- MedInc -->
+
+                        <label class="field">
+
+                            <span>
+                                Median income
+                                <em>MedInc</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="MedInc"
+                                    step="any"
+                                    min="0"
+                                    placeholder="e.g. 5.2"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    × $10,000
+                                </span>
+
+                            </span>
+
+                            <small>
+                                Median household income in the area
+                            </small>
+
+                        </label>
+
+
+                        <!-- HouseAge -->
+
+                        <label class="field">
+
+                            <span>
+                                House age
+                                <em>HouseAge</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="HouseAge"
+                                    step="any"
+                                    min="0"
+                                    placeholder="e.g. 25"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    years
+                                </span>
+
+                            </span>
+
+                            <small>
+                                Median age of homes in the area
+                            </small>
+
+                        </label>
+
+
+                        <!-- AveRooms -->
+
+                        <label class="field">
+
+                            <span>
+                                Average rooms
+                                <em>AveRooms</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="AveRooms"
+                                    step="any"
+                                    min="0"
+                                    placeholder="e.g. 5.5"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    rooms
+                                </span>
+
+                            </span>
+
+                            <small>
+                                Average rooms per household
+                            </small>
+
+                        </label>
+
+
+                        <!-- Population -->
+
+                        <label class="field">
+
+                            <span>
+                                Population
+                                <em>Population</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="Population"
+                                    step="any"
+                                    min="0"
+                                    placeholder="e.g. 1,200"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    people
+                                </span>
+
+                            </span>
+
+                            <small>
+                                People living in the area
+                            </small>
+
+                        </label>
+
+
+                        <!-- AveOccup -->
+
+                        <label class="field">
+
+                            <span>
+                                Average occupancy
+                                <em>AveOccup</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="AveOccup"
+                                    step="any"
+                                    min="0"
+                                    placeholder="e.g. 3.2"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    people / home
+                                </span>
+
+                            </span>
+
+                            <small>
+                                Average residents per household
+                            </small>
+
+                        </label>
+
+
+                        <!-- Latitude -->
+
+                        <label class="field">
+
+                            <span>
+                                Latitude
+                                <em>Latitude</em>
+                            </span>
+
+                            <span class="control">
+
+                                <input
+                                    type="number"
+                                    id="Latitude"
+                                    step="any"
+                                    min="32"
+                                    max="42"
+                                    placeholder="e.g. 34.05"
+                                    required
+                                >
+
+                                <span class="unit">
+                                    ° N
+                                </span>
+
+                            </span>
+
+                            <small>
+                                California latitude (approximately 32–42°)
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+                    <button
+                        class="submit-button"
+                        id="predictButton"
+                        type="submit"
+                    >
+                        Get my estimate
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+
+                    <p class="form-footnote">
+                        <span aria-hidden="true">ⓘ</span>
+                        Estimates are generated by a machine learning model.
+                    </p>
+
+                </form>
+
+
+                <!-- SINGLE RESULT -->
+
+                <aside
+                    class="result-card"
+                    aria-live="polite"
+                >
+
+                    <div class="result-top">
+
+                        <span class="result-icon">↗</span>
+
+                        <span class="result-tag">
+                            YOUR ESTIMATE
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-content">
+
+                        <p class="result-label">
+                            Estimated home value
+                        </p>
+
+                        <div id="predictionResult" class="price">
+                            $<span>—</span>
+                        </div>
+
+                        <p
+                            id="resultMessage"
+                            class="result-message"
+                        >
+                            Your estimate will appear here once you enter
+                            the property details.
+                        </p>
+
+                    </div>
+
+
+                    <div class="result-divider"></div>
+
+
+                    <div class="result-detail">
+                        <span>Estimate type</span>
+                        <b>Area-based prediction</b>
+                    </div>
+
+
+                    <div class="result-detail">
+                        <span>Powered by</span>
+                        <b>CaliPredict model</b>
+                    </div>
+
+
+                    <div
+                        class="result-decoration"
+                        aria-hidden="true"
+                    >
+                        ⌂
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BATCH PREDICTION
+        ========================== -->
+
+        <section
+            class="batch-section"
+            id="batch"
+        >
+
+            <div class="batch-inner">
+
+
+                <div class="batch-heading">
+
+                    <div class="eyebrow">
+                        MORE THAN ONE PROPERTY?
+                    </div>
+
+                    <h2>
+                        Estimate a whole dataset.
+                    </h2>
+
+                    <p>
+                        Upload a CSV with the same six model features
+                        to generate predictions in one go.
+                    </p>
+
+                </div>
+
+
+                <!-- CSV UPLOAD CARD -->
+
+                <div class="upload-card">
+
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+
+                    <div class="upload-copy">
+
+                        <b>
+                            Upload your CSV file
+                        </b>
+
+                        <span id="fileName">
+                            Choose a file to begin · .csv
+                        </span>
+
+                    </div>
+
+
+                    <label
+                        class="file-button"
+                        for="csvFile"
+                    >
+                        Browse files
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="csvFile"
+                        accept=".csv,text/csv"
+                    >
+
+
+                    <button
+                        class="upload-button"
+                        id="uploadButton"
+                        onclick="uploadCSV()"
+                        type="button"
+                    >
+                        Upload &amp; predict
+                        <span>→</span>
+                    </button>
+
+
+                    <!-- CSV RESULTS -->
+
+                    <div
+                        id="csvResult"
+                        class="csv-result"
+                        aria-live="polite"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <a
+            class="brand footer-brand"
+            href="#top"
+        >
+
+            <span class="brand-mark">
+                C
+            </span>
+
+            <span>
+                Cali<span class="brand-light">Predict</span>
+            </span>
+
+        </a>
+
+        <span>
+            California home estimates, made approachable.
+        </span>
+
+        <span>
+            © 2026 CaliPredict
+        </span>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        /* =========================================
+           SINGLE PREDICTION
+        ========================================= */
+
+        const form =
+            document.getElementById('predictionForm');
+
+        const result =
+            document.getElementById('predictionResult');
+
+        const message =
+            document.getElementById('resultMessage');
+
+        const predictButton =
+            document.getElementById('predictButton');
+
+
+        form.addEventListener('submit', async (event) => {
+
+            event.preventDefault();
+
+            const params = new URLSearchParams();
+
+            [
+                'MedInc',
+                'HouseAge',
+                'AveRooms',
+                'Population',
+                'AveOccup',
+                'Latitude'
+            ].forEach((key) => {
+
+                params.set(
+                    key,
+                    document.getElementById(key).value
+                );
+
+            });
+
+
+            predictButton.disabled = true;
+
+            predictButton.innerHTML =
+                'Calculating estimate <span class="spinner" aria-hidden="true"></span>';
+
+
+            result.innerHTML =
+                '<span class="calculating">…</span>';
+
+
+            message.textContent =
+                'Checking the property details and generating your estimate.';
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/predict?${params.toString()}`
+                    );
+
+
+                if (!response.ok) {
+                    throw new Error(
+                        'The prediction request could not be completed.'
+                    );
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    typeof data.prediction !== 'number' ||
+                    !Number.isFinite(data.prediction)
+                ) {
+
+                    throw new Error(
+                        'The model returned an invalid estimate.'
+                    );
+
+                }
+
+
+                result.innerHTML =
+                    `$<span>${(
+                        data.prediction * 100000
+                    ).toLocaleString(
+                        'en-US',
+                        {
+                            maximumFractionDigits: 0
+                        }
+                    )}</span>`;
+
+
+                message.textContent =
+                    'Estimate generated from the details you provided.';
+
+            }
+
+
+            catch (error) {
+
+                result.innerHTML =
+                    '$<span>—</span>';
+
+                message.textContent =
+                    error.message ||
+                    'Unable to generate an estimate. Please try again.';
+
+            }
+
+
+            finally {
+
+                predictButton.disabled = false;
+
+                predictButton.innerHTML =
+                    'Get my estimate <span aria-hidden="true">→</span>';
+
+            }
+
+        });
+
+
+        /* =========================================
+           CSV FILE NAME
+        ========================================= */
+
+        const csvFile =
+            document.getElementById('csvFile');
+
+
+        csvFile.addEventListener('change', () => {
+
+            document.getElementById('fileName').textContent =
+                csvFile.files[0]?.name ||
+                'Choose a file to begin · .csv';
+
+        });
+
+
+        /* =========================================
+           CSV BATCH PREDICTION
+        ========================================= */
+
+        async function uploadCSV() {
+
+            const output =
+                document.getElementById('csvResult');
+
+            const button =
+                document.getElementById('uploadButton');
+
+
+            /* No file selected */
+
+            if (!csvFile.files.length) {
+
+                output.innerHTML = `
+                    <div class="csv-error">
+                        Please choose a CSV file first.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const payload =
+                new FormData();
+
+            payload.append(
+                'file',
+                csvFile.files[0]
+            );
+
+
+            button.disabled = true;
+
+            output.innerHTML = `
+                <div class="csv-loading">
+                    Processing your file…
+                </div>
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        '/predict_file',
+                        {
+                            method: 'POST',
+                            body: payload
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.detail ||
+                        'The CSV could not be processed. Check its columns and try again.'
+                    );
+
+                }
+
+
+                const predictions =
+                    data.predictions;
+
+
+                /* =========================================
+                   DOWNLOAD CSV
+                ========================================= */
+
+                const csv = [
+
+                    'Row,Prediction',
+
+                    ...predictions.map(
+                        (value, index) =>
+                            `${index + 1},${value}`
+                    )
+
+                ].join('\n');
+
+
+                const downloadUrl =
+                    URL.createObjectURL(
+                        new Blob(
+                            [csv],
+                            {
+                                type:
+                                    'text/csv;charset=utf-8'
+                            }
+                        )
+                    );
+
+
+                /* =========================================
+                   HORIZONTAL TABLE
+
+                   Row | Prediction | Row | Prediction ...
+                ========================================= */
+
+                output.innerHTML = `
+
+                    <div class="csv-summary">
+
+                        ${predictions.length.toLocaleString()}
+                        predictions generated
+
+                    </div>
+
+
+                    <a
+                        class="download-results"
+                        href="${downloadUrl}"
+                        download="calipredict_results.csv"
+                    >
+                        Download predictions CSV ↓
+                    </a>
+
+
+                    <div class="prediction-table-wrap">
+
+                        <table class="prediction-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    ${predictions.map(() => `
+
+                                        <th>
+                                            Row
+                                        </th>
+
+                                        <th>
+                                            Prediction
+                                        </th>
+
+                                    `).join('')}
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    ${predictions.map(
+                                        (value, index) => `
+
+                                        <td>
+                                            ${index + 1}
+                                        </td>
+
+                                        <td class="prediction-value">
+                                            ${Number(value).toLocaleString(
+                                                'en-US',
+                                                {
+                                                    maximumFractionDigits: 4
+                                                }
+                                            )}
+                                        </td>
+
+                                    `
+                                    ).join('')}
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                `;
+
+            }
+
+
+            catch (error) {
+
+                output.innerHTML = `
+
+                    <div class="csv-error">
+                        ${
+                            error.message ||
+                            'Unable to process this CSV. Please try again.'
+                        }
+                    </div>
+
+                `;
+
+            }
+
+
+            finally {
+
+                button.disabled = false;
+
+            }
+
+        }
+
+    </script>
+
 </body>
+
 </html>
-
-

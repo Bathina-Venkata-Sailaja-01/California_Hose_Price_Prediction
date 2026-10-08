@@ -1,33 +1,1622 @@
-sh
-/* Keep batch predictions inside a compact, independently scrollable panel. */
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "DM Sans", sans-serif;
+
+    color: #26352b;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef3fc 0%,
+            #f8faff 50%,
+            #f4f7fc 100%
+        );
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+.topbar {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 6%;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border-bottom: 1px solid #e8ece8;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    backdrop-filter: blur(12px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-family: "Manrope", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+
+    color: #24352b;
+}
+
+.brand-light {
+    font-weight: 500;
+    color: #6b786e;
+}
+
+.brand-mark {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.topbar nav {
+    display: flex;
+    gap: 30px;
+}
+
+.topbar nav a {
+    color: #59675d;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: color 0.2s ease;
+}
+
+.topbar nav a:hover {
+    color: #1f4fb2;
+}
+
+.top-cta {
+    padding: 10px 17px;
+
+    border-radius: 10px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.top-cta:hover {
+    background: #173d91;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   COMMON EYEBROW
+========================================= */
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #1f4fb2;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+    max-width: 1200px;
+
+    min-height: 650px;
+
+    margin: auto;
+
+    padding: 80px 30px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    gap: 50px;
+}
+
+.hero-copy h1 {
+    margin-top: 18px;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(44px, 5vw, 68px);
+
+    line-height: 1.02;
+
+    letter-spacing: -2.8px;
+
+    color: #25352b;
+}
+
+.hero-copy h1 span {
+    color: #1f4fb2;
+}
+
+.hero-intro {
+    max-width: 520px;
+
+    margin-top: 25px;
+
+    color: #66736a;
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.primary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 30px;
+
+    padding: 13px 19px;
+
+    border-radius: 10px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.hero-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 18px;
+
+    color: #66736a;
+
+    font-size: 13px;
+}
+
+.check {
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e4edfD;
+
+    color: #1f4fb2;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   HERO VISUAL
+========================================= */
+
+.hero-visual {
+    min-height: 430px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            160deg,
+            #dceaff,
+            #eef5ff 55%,
+            #e7f0e7
+        );
+}
+
+.sun {
+    width: 105px;
+    height: 105px;
+
+    position: absolute;
+
+    top: 45px;
+    right: 65px;
+
+    border-radius: 50%;
+
+    background: #fff2bd;
+}
+
+.land {
+    position: absolute;
+
+    left: -5%;
+    right: -5%;
+
+    border-radius: 50%;
+}
+
+.land-back {
+    height: 230px;
+
+    bottom: -115px;
+
+    background: #a9c9a6;
+}
+
+.land-front {
+    height: 190px;
+
+    bottom: -125px;
+
+    background: #78a67a;
+}
+
+.visual-label {
+    position: absolute;
+
+    top: 25px;
+    left: 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 11px 14px;
+
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.82);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 8px 25px rgba(30, 60, 40, 0.08);
+}
+
+.visual-label b {
+    display: block;
+
+    color: #35463a;
+
+    font-size: 12px;
+}
+
+.visual-label small {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #718078;
+
+    font-size: 10px;
+}
+
+.visual-pin {
+    font-size: 23px;
+    color: #1f4fb2;
+}
+
+
+/* =========================================
+   HOUSE ILLUSTRATION
+========================================= */
+
+.home {
+    position: absolute;
+
+    left: 50%;
+    bottom: 105px;
+
+    width: 230px;
+    height: 150px;
+
+    transform: translateX(-50%);
+}
+
+.roof {
+    width: 0;
+    height: 0;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    border-left: 115px solid transparent;
+    border-right: 115px solid transparent;
+    border-bottom: 85px solid #344d3b;
+}
+
+.house-body {
+    width: 190px;
+    height: 105px;
+
+    position: absolute;
+
+    left: 20px;
+    bottom: 0;
+
+    background: #f6efe2;
+
+    border-radius: 4px;
+}
+
+.side-house {
+    width: 30px;
+    height: 105px;
+
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    background: #d8cdb9;
+}
+
+.window {
+    width: 34px;
+    height: 34px;
+
+    position: absolute;
+
+    top: 25px;
+
+    border: 5px solid #49606a;
+
+    background: #c9e7f1;
+}
+
+.window-one {
+    left: 25px;
+}
+
+.window-two {
+    right: 25px;
+}
+
+.door {
+    width: 38px;
+    height: 67px;
+
+    position: absolute;
+
+    left: 76px;
+    bottom: 0;
+
+    background: #785c46;
+
+    border-radius: 3px 3px 0 0;
+}
+
+
+/* =========================================
+   TREES
+========================================= */
+
+.tree {
+    position: absolute;
+
+    bottom: 100px;
+}
+
+.tree i {
+    width: 13px;
+    height: 60px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 25px;
+
+    background: #795b43;
+}
+
+.tree b {
+    width: 70px;
+    height: 70px;
+
+    position: absolute;
+
+    bottom: 45px;
+    left: -4px;
+
+    border-radius: 50%;
+
+    background: #4f8054;
+}
+
+.tree-one {
+    left: 50px;
+    transform: scale(0.9);
+}
+
+.tree-two {
+    right: 45px;
+    transform: scale(0.72);
+}
+
+.visual-caption {
+    position: absolute;
+
+    left: 50%;
+    bottom: 23px;
+
+    transform: translateX(-50%);
+
+    width: max-content;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   ESTIMATE SECTION
+========================================= */
+
+.estimate-section {
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 70px 30px;
+}
+
+.section-intro {
+    margin-bottom: 30px;
+}
+
+.section-intro h2,
+.batch-heading h2 {
+    margin-top: 10px;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 38px;
+
+    letter-spacing: -1.4px;
+
+    color: #26352b;
+}
+
+.section-intro p,
+.batch-heading p {
+    margin-top: 9px;
+
+    color: #718078;
+
+    font-size: 14px;
+}
+
+.workspace {
+    display: grid;
+
+    grid-template-columns: 1.5fr 0.8fr;
+
+    gap: 25px;
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.form-card {
+    padding: 30px;
+
+    border: 1px solid #e0e6e0;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow:
+        0 12px 35px rgba(27, 54, 38, 0.05);
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.step {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #e9f0ff;
+
+    color: #1f4fb2;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.card-heading h3 {
+    color: #26352b;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 18px;
+}
+
+.card-heading p {
+    margin-top: 3px;
+
+    color: #7a867e;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   FIELD GRID
+========================================= */
+
+.field-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+.field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    color: #46544b;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.field em {
+    margin-left: 4px;
+
+    color: #1f4fb2;
+
+    font-style: normal;
+
+    font-size: 10px;
+}
+
+.field small {
+    color: #8a948d;
+
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.control {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.control input {
+    width: 100%;
+
+    height: 43px;
+
+    padding: 0 80px 0 12px;
+
+    border: 1px solid #dfe5df;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    color: #29382e;
+
+    background: #fbfdfb;
+
+    font-size: 13px;
+
+    transition:
+        border 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.control input:focus {
+    border-color: #4f7df7;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 125, 247, 0.1);
+}
+
+.unit {
+    position: absolute;
+
+    right: 11px;
+
+    color: #879189;
+
+    font-size: 9px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.submit-button {
+    width: 100%;
+
+    height: 46px;
+
+    margin-top: 24px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.submit-button:hover {
+    background: #173d91;
+
+    transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.form-footnote {
+    margin-top: 12px;
+
+    text-align: center;
+
+    color: #89938c;
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   RESULT CARD
+========================================= */
+
+.result-card {
+    min-height: 400px;
+
+    padding: 28px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #edf3ff,
+            #ffffff
+        );
+
+    border: 1px solid #dfe7f4;
+
+    box-shadow:
+        0 12px 35px rgba(27, 54, 38, 0.05);
+}
+
+.result-top {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.result-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    font-size: 14px;
+}
+
+.result-tag {
+    color: #1f4fb2;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.result-content {
+    margin-top: 55px;
+}
+
+.result-label {
+    color: #68766e;
+
+    font-size: 12px;
+}
+
+.price {
+    margin-top: 7px;
+
+    color: #24352b;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 36px;
+    font-weight: 800;
+
+    letter-spacing: -1.4px;
+}
+
+.price span {
+    color: #24352b;
+}
+
+.result-message {
+    max-width: 300px;
+
+    margin-top: 14px;
+
+    color: #748078;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.result-divider {
+    height: 1px;
+
+    margin: 28px 0;
+
+    background: #dfe6df;
+}
+
+.result-detail {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 13px;
+
+    color: #7b877f;
+
+    font-size: 11px;
+}
+
+.result-detail b {
+    color: #35463a;
+
+    font-weight: 700;
+}
+
+.result-decoration {
+    position: absolute;
+
+    right: -20px;
+    bottom: -25px;
+
+    color: rgba(31, 79, 178, 0.05);
+
+    font-family: serif;
+
+    font-size: 150px;
+}
+
+
+/* =========================================
+   BATCH SECTION
+========================================= */
+
+.batch-section {
+    padding: 80px 30px;
+
+    background: #f3f6f3;
+}
+
+.batch-inner {
+    max-width: 1200px;
+
+    margin: auto;
+}
+
+.batch-heading {
+    margin-bottom: 30px;
+}
+
+
+/* =========================================
+   UPLOAD CARD
+========================================= */
+
+.upload-card {
+    display: grid;
+
+    grid-template-columns:
+        auto
+        1fr
+        auto
+        auto;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 22px;
+
+    border: 1px solid #dfe5df;
+
+    border-radius: 18px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 24px rgba(27, 54, 38, 0.06);
+}
+
+.upload-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #edf3ff;
+
+    color: #1f4fb2;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.upload-copy b {
+    display: block;
+
+    color: #35463a;
+
+    font-size: 13px;
+}
+
+.upload-copy span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #849087;
+
+    font-size: 11px;
+}
+
+#csvFile {
+    display: none;
+}
+
+.file-button {
+    padding: 10px 15px;
+
+    border: 1px solid #dfe5df;
+
+    border-radius: 9px;
+
+    background: #fbfdfb;
+
+    color: #4b5a50;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.file-button:hover {
+    border-color: #b9c5ba;
+}
+
+.upload-button {
+    padding: 11px 17px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #1f4fb2;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.upload-button:hover {
+    background: #173d91;
+}
+
+.upload-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   CSV RESULT CARD
+========================================= */
+
 .upload-card .csv-result {
-  grid-column: 1 / -1;
-  width: min(100%, 460px);
-  min-height: 0;
-  max-height: 235px;
-  margin: 8px auto 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  padding: 10px;
-  border: 1px solid #e3e9e3;
-  border-radius: 8px;
-  background: #fbfdfb;
-  text-align: left;
+    grid-column: 1 / -1;
+
+    width: min(100%, 900px);
+
+    min-height: 0;
+
+    margin: 14px auto 0;
+
+    padding: 14px 16px 16px;
+
+    border: 1px solid #dfe5df;
+
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow:
+        0 8px 24px rgba(27, 54, 38, 0.06);
+
+    text-align: left;
+
+    overflow: hidden;
 }
-.upload-card .prediction-table-wrap {
-  width: 100%;
-  height: 155px;
-  max-height: 155px;
-  overflow-y: scroll;
-  overflow-x: auto;
-  scrollbar-gutter: stable;
+
+
+/* =========================================
+   CSV SUMMARY
+========================================= */
+
+.upload-card .csv-summary {
+    margin: 0 0 8px;
+
+    color: #26352b;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-align: center;
 }
-.upload-card .prediction-table {
-  min-width: 260px;
-}
-.upload-card .csv-summary,
+
+
+/* =========================================
+   DOWNLOAD LINK
+========================================= */
+
 .upload-card .download-results {
-  display: block;
-  margin-bottom: 8px;
+    display: block;
+
+    width: fit-content;
+
+    margin: 0 auto 12px;
+
+    color: #1f4fb2;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.upload-card .download-results:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   ⭐ HORIZONTAL PREDICTION TABLE
+========================================= */
+
+.upload-card .prediction-table-wrap {
+
+    width: 100%;
+
+    height: 180px;
+
+    max-height: 180px;
+
+    /*
+       IMPORTANT:
+       Horizontal scrolling is enabled here.
+    */
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    border: 1px solid #e7ebe7;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    scrollbar-gutter: stable;
+}
+
+
+/*
+    The table becomes wider than its container
+    when there are many predictions.
+*/
+
+.upload-card .prediction-table {
+
+    width: max-content;
+
+    min-width: 100%;
+
+    border-collapse: collapse;
+
+    table-layout: auto;
+}
+
+
+/*
+    Each prediction has:
+
+    Row | Prediction
+
+    Row | Prediction
+
+    Row | Prediction
+*/
+
+.upload-card .prediction-table th,
+.upload-card .prediction-table td {
+
+    min-width: 90px;
+
+    padding: 10px 14px;
+
+    border-right: 1px solid #e7ebe7;
+
+    border-bottom: 1px solid #e7ebe7;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    font-size: 12px;
+}
+
+
+/* Header */
+
+.upload-card .prediction-table th {
+
+    background: #f3f7f3;
+
+    color: #35463a;
+
+    font-weight: 700;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+}
+
+
+/* Values */
+
+.upload-card .prediction-table td {
+
+    background: #fff;
+
+    color: #536257;
+
+    font-weight: 500;
+}
+
+
+/* Prediction value */
+
+.upload-card .prediction-table .prediction-value {
+
+    color: #1f4fb2;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   HORIZONTAL SCROLLBAR
+========================================= */
+
+.upload-card .prediction-table-wrap::-webkit-scrollbar {
+
+    height: 12px;
+
+}
+
+.upload-card .prediction-table-wrap::-webkit-scrollbar-thumb {
+
+    background: #b8c7ba;
+
+    border: 3px solid #fff;
+
+    border-radius: 10px;
+
+}
+
+.upload-card .prediction-table-wrap::-webkit-scrollbar-thumb:hover {
+
+    background: #91a594;
+
+}
+
+.upload-card .prediction-table-wrap::-webkit-scrollbar-track {
+
+    background: #f2f5f2;
+
+    border-radius: 10px;
+
+}
+
+
+/* Firefox */
+
+.upload-card .prediction-table-wrap {
+
+    scrollbar-width: auto;
+
+}
+
+
+/* =========================================
+   CSV LOADING
+========================================= */
+
+.csv-loading {
+
+    padding: 25px;
+
+    text-align: center;
+
+    color: #6c786f;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   CSV ERROR
+========================================= */
+
+.csv-error {
+
+    padding: 13px 15px;
+
+    border: 1px solid #ead4d4;
+
+    border-radius: 9px;
+
+    background: #fff8f8;
+
+    color: #a34c4c;
+
+    font-size: 12px;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.spinner {
+
+    display: inline-block;
+
+    width: 13px;
+    height: 13px;
+
+    margin-left: 7px;
+
+    vertical-align: -2px;
+
+    border: 2px solid rgba(255, 255, 255, 0.45);
+
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+.calculating {
+
+    animation: pulse 1s infinite;
+
+}
+
+@keyframes pulse {
+
+    50% {
+        opacity: 0.35;
+    }
+
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 30px 6%;
+
+    background: white;
+
+    border-top: 1px solid #e2e8e2;
+
+    color: #78847c;
+
+    font-size: 11px;
+}
+
+.footer-brand {
+
+    font-size: 17px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .topbar {
+        padding: 16px 25px;
+    }
+
+    .topbar nav {
+        display: none;
+    }
+
+    .hero {
+
+        grid-template-columns: 1fr;
+
+        padding-top: 55px;
+
+    }
+
+    .hero-visual {
+
+        min-height: 350px;
+
+    }
+
+    .workspace {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .result-card {
+
+        min-height: 320px;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .hero,
+    .estimate-section,
+    .batch-inner {
+
+        padding-left: 18px;
+        padding-right: 18px;
+
+    }
+
+    .hero-copy h1 {
+
+        font-size: 43px;
+
+        letter-spacing: -2px;
+
+    }
+
+    .field-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .upload-card {
+
+        grid-template-columns: 1fr;
+
+        align-items: stretch;
+
+    }
+
+    .upload-icon {
+
+        margin: auto;
+
+    }
+
+    .upload-copy {
+
+        text-align: center;
+
+    }
+
+    .file-button,
+    .upload-button {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .topbar {
+
+        padding: 14px 16px;
+
+    }
+
+    .top-cta {
+
+        padding: 8px 11px;
+
+        font-size: 11px;
+
+    }
+
+    .brand {
+
+        font-size: 17px;
+
+    }
+
+    .brand-mark {
+
+        width: 29px;
+        height: 29px;
+
+        font-size: 15px;
+
+    }
+
+    .hero {
+
+        min-height: auto;
+
+        padding-top: 45px;
+
+        padding-bottom: 50px;
+
+    }
+
+    .hero-copy h1 {
+
+        font-size: 38px;
+
+    }
+
+    .hero-intro {
+
+        font-size: 14px;
+
+    }
+
+    .hero-visual {
+
+        min-height: 300px;
+
+    }
+
+    .section-intro h2,
+    .batch-heading h2 {
+
+        font-size: 30px;
+
+    }
+
+    .form-card {
+
+        padding: 20px;
+
+    }
+
+    .result-card {
+
+        padding: 22px;
+
+    }
+
+    .price {
+
+        font-size: 30px;
+
+    }
+
+
+    /* CSV table on mobile */
+
+    .upload-card .prediction-table-wrap {
+
+        height: 160px;
+
+        max-height: 160px;
+
+    }
+
+    .upload-card .prediction-table th,
+    .upload-card .prediction-table td {
+
+        min-width: 80px;
+
+        padding: 8px 10px;
+
+        font-size: 11px;
+
+    }
+
+
+    footer {
+
+        flex-direction: column;
+
+        text-align: center;
+
+    }
+
 }
